@@ -1,0 +1,54 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="marginLarge">15dp</dimen>
+    <dimen name="marginMiddle">10dp</dimen>
+    <dimen name="marginSmall">5dp</dimen>
+    <!--SearchView Margin-->
+    <dimen name="search_view_horizontal_margin">5dp</dimen>
+    <dimen name="search_view_vertical_margin">2dp</dimen>
+    <dimen name="search_view_margin">16dp</dimen>
+
+    <dimen name="titleBarTextSize">@dimen/sp_20</dimen>
+    <dimen name="titleBarButtonTextSize">@dimen/sp_16</dimen>
+    <dimen name="toolBarTextSize">@dimen/sp_16</dimen>
+
+    <dimen name="titleBarPadding_V">2dp</dimen>
+    <dimen name="titleBarPadding_H">0dp</dimen>
+    <dimen name="titleBarHeight">48dp</dimen>
+
+    <dimen name="adapterItemHeight">50dp</dimen>
+    <dimen name="adapterItemHeight_Large">60dp</dimen>
+    <dimen name="adapterItemHeight_Small">45dp</dimen>
+
+    <dimen name="adapterItemPadding">2dp</dimen>
+    <dimen name="adapterItemPadding_Large">4dp</dimen>
+    <dimen name="adapterItemMargin_H">10dp</dimen>
+    <dimen name="adapterItemMargin_V">10dp</dimen>
+    <dimen name="adapterTextMargin">10dp</dimen>
+    <dimen name="adapterTextMargin_Large">20dp</dimen>
+    <dimen name="adapterTextMargin_Small">5dp</dimen>
+
+    <dimen name="adapterTextSize">10sp</dimen>
+    <dimen name="textSizeLarge">16sp</dimen>
+    <dimen name="textSizeMiddle">14sp</dimen>
+    <dimen name="textSizeSmall">12sp</dimen>
+
+    <dimen name="lineHeight">2px</dimen>
+
+    <dimen name="pie_chart_single_text_size">28dp</dimen>
+    <dimen name="pie_chart_double_text_size">16dp</dimen>
+
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="sp_12">12sp</dimen>
+    <dimen name="sp_14">14sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_18">18sp</dimen>
+    <dimen name="sp_20">20sp</dimen>
+    <dimen name="sp_22">22sp</dimen>
+    <dimen name="sp_24">24sp</dimen>
+    <dimen name="sp_26">26sp</dimen>
+    <dimen name="sp_28">28sp</dimen>
+</resources>
