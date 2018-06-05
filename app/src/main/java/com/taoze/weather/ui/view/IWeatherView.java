@@ -7,7 +7,6 @@ import com.taoze.weather.model.entity.Weather;
  */
 
 public interface IWeatherView {
-    public Weather getWeather();
-
-    public void setWeather();
+    void showError(String errorMsg);
+    void setWeather(Weather weather);
 }

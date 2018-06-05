@@ -1,10 +1,13 @@
 package com.taoze.weather.ui.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Xml;
+import android.view.WindowManager;
+import android.widget.TextView;
 
-import com.ewide.core.orm.DBConfig;
 import com.taoze.weather.R;
 import com.taoze.weather.global.WApplication;
 import com.taoze.weather.model.dao.CityDao;
@@ -13,8 +16,13 @@ import com.taoze.weather.model.dao.ProvinceDao;
 import com.taoze.weather.model.entity.City;
 import com.taoze.weather.model.entity.County;
 import com.taoze.weather.model.entity.Province;
+import com.taoze.weather.model.entity.Weather;
+import com.taoze.weather.presenter.IWeatherPresenter;
+import com.taoze.weather.presenter.impl.WeatherPresenterImpl;
+import com.taoze.weather.ui.adapter.WeatherRecyclerAdapter;
+import com.taoze.weather.ui.common.BlurredView;
 import com.taoze.weather.ui.common.CommonActivity;
-import com.taoze.weather.util.Utils;
+import com.taoze.weather.ui.view.IWeatherView;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -23,7 +31,32 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends CommonActivity {
+import butterknife.BindView;
+
+public class MainActivity extends CommonActivity implements IWeatherView{
+
+    /*========== 控件相关 ===========*/
+    @BindView(R.id.bv_weather)
+    public BlurredView weatherBView;           //背景模糊图
+
+    @BindView(R.id.rv_weather)
+    public RecyclerView weatherRView;          //滑动列表
+
+    public TextView tempText;                  //温度
+    public TextView weatherText;               //天气
+    public TextView windText;                  //风向
+    public TextView windPowerText;             //风力
+    public TextView humPowerText;              //湿度
+    public TextView flPowerText;               //体感温度
+
+    /*========== 数据相关 ===========*/
+
+
+    /*========== 其他 ===========*/
+    private int mScrollerY;                     //滚动距离
+    private int mAlpha;                         //透明值
+
+    private IWeatherPresenter weatherPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +65,58 @@ public class MainActivity extends CommonActivity {
     }
 
     @Override
+    public void bindViewListener() {
+        super.bindViewListener();
+        weatherRView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                mScrollerY += dy;                       //滚动距离
+                if (Math.abs(mScrollerY) > 1000) {      //根据滚动距离控制模糊程度 滚动距离是模糊程度的十倍
+                    mAlpha = 100;
+                } else {
+                    mAlpha = Math.abs(mScrollerY) / 10;
+                }
+                weatherBView.setBlurredLevel(mAlpha);    //设置透明度等级
+            }
+        });
+    }
+
+    @Override
     public void onInitData() {
-        initializeDB();
         loadAssetsFile();
+
+        //透明状态栏 导航栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+        tempText = (TextView) findViewById(R.id.tv_basic_temp);
+        weatherText = (TextView) findViewById(R.id.tv_basic_weather);
+        windText = (TextView) findViewById(R.id.tv_basic_wind);
+        windPowerText = (TextView) findViewById(R.id.tv_basic_wind_power);
+        humPowerText = (TextView) findViewById(R.id.tv_basic_hum_power);
+        flPowerText = (TextView) findViewById(R.id.tv_basic_fl_power);
+
+        weatherRView.setLayoutManager(new LinearLayoutManager(this));
+        weatherRView.setAdapter(new WeatherRecyclerAdapter(this));
+
+        weatherPresenter = new WeatherPresenterImpl(this);
+        String cityNO = "101200101";
+        weatherPresenter.getWeather(cityNO);
+    }
+
+    @Override
+    public void showError(String errorMsg) {
+
+    }
+
+    @Override
+    public void setWeather(Weather weather) {
+        if(weather == null)return;
+        tempText.setText(weather.getWeatherinfo().getTemp());
+        weatherText.setText(weather.getWeatherinfo().getCity()+"  |  "+weather.getWeatherinfo().getWeather());
+        windPowerText.setText(weather.getWeatherinfo().getWS());
+        humPowerText.setText(weather.getWeatherinfo().getSD());
     }
 
     private void loadAssetsFile(){
@@ -54,14 +136,6 @@ public class MainActivity extends CommonActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void initializeDB() {
-        Log.d(WApplication.TAG, "init DB");
-        String path = Utils.getAppDir(this, getResources().getString(R.string.app_name)) + "/config/" + "db";
-        Log.d(WApplication.TAG, "Database Path --> " + path);
-        DBConfig.DB_PATH = path;
-        DBConfig.DB_VERSION = 3;
     }
 
     private void parseXML(InputStream inStream) {

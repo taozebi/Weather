@@ -6,4 +6,8 @@ package com.taoze.weather.presenter;
  */
 
 public interface IWeatherPresenter {
+    /**
+     * 获取天气的逻辑
+     */
+    void getWeather(String cityNO);
 }

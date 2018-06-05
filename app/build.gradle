@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.jakewharton.butterknife'
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -25,11 +25,12 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:26+'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.android.support:recyclerview-v7:26+'
-    //ButterKnife 注解库
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    //ButterKnife 注解库
+    compile 'cn.finalteam:okhttpfinal:2.0.7' //Http框架
+    compile 'com.google.code.gson:gson:2.6.2' //Gson json处理库
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.jakewharton:butterknife:8.4.0'//ButterKnife 注解库
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0' //ButterKnife 注解库
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar' //集成HelloCharts 图表库
     implementation files('libs/dbcore.jar')
 }

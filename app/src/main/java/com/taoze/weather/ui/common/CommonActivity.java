@@ -49,7 +49,8 @@ public abstract class CommonActivity extends BaseActivity {
         baseLayout = new RelativeLayout(this);
 
         contentLayout = new RelativeLayout(this);
-
+        RelativeLayout.LayoutParams contentLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        baseLayout.addView(contentLayout,contentLayoutParams);
         RelativeLayout.LayoutParams baseParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
         setContentView(baseLayout, baseParams);
