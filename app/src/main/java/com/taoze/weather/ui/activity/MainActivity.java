@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Xml;
 import android.view.View;
@@ -45,12 +46,23 @@ public class MainActivity extends CommonActivity implements IWeatherView{
     @BindView(R.id.rv_weather)
     public RecyclerView weatherRView;          //滑动列表
 
-    public TextView tempText;                  //温度
+    public TextView tempText;                  //当前温度
     public TextView weatherText;               //天气
     public TextView windText;                  //风向
     public TextView windPowerText;             //风力
     public TextView humPowerText;              //湿度
-    public TextView flPowerText;               //舒适度
+    public TextView flPowerText;               //紫外线指数
+
+    public TextView weekTv;                     //星期
+    public TextView dateTv;                     //日期
+    public TextView temperatureTv;             //温度
+    public TextView dryingIndexTv;             //干燥指数
+    public TextView washIndexTv;               //洗车指数
+    public TextView travelIndexTv;             //旅行指数
+    public TextView exerciseIndexTv;           //锻炼指数
+    public TextView dressIndexTv;              //穿衣指数
+    public TextView dressAdviceTv;             //穿衣建议
+    public TextView comfortIndexTv;            //舒适度
 
     /*========== 数据相关 ===========*/
 
@@ -117,6 +129,17 @@ public class MainActivity extends CommonActivity implements IWeatherView{
                 humPowerText = (TextView) basicView.findViewById(R.id.tv_basic_hum_power);
                 flPowerText = (TextView) basicView.findViewById(R.id.tv_basic_fl_power);
 
+                weekTv = (TextView) basicView.findViewById(R.id.tv_basic_week);
+                dateTv = (TextView) basicView.findViewById(R.id.tv_basic_date);
+                temperatureTv = (TextView) basicView.findViewById(R.id.tv_basic_temperature);
+                dryingIndexTv = (TextView) basicView.findViewById(R.id.tv_basic_drying_index);
+                washIndexTv = (TextView) basicView.findViewById(R.id.tv_basic_wash_index);
+                travelIndexTv = (TextView) basicView.findViewById(R.id.tv_basic_travel_index);
+                exerciseIndexTv = (TextView) basicView.findViewById(R.id.tv_basic_exercise_index);
+                dressIndexTv = (TextView) basicView.findViewById(R.id.tv_basic_dressing_index);
+                dressAdviceTv = (TextView) basicView.findViewById(R.id.tv_basic_dressing_advice);
+                comfortIndexTv = (TextView) basicView.findViewById(R.id.tv_basic_comfort_index);
+
                 weatherPresenter = new WeatherPresenterImpl(MainActivity.this);
                 String cityNO = "武汉";
                 weatherPresenter.getWeather(cityNO);
@@ -142,13 +165,24 @@ public class MainActivity extends CommonActivity implements IWeatherView{
     public void setWeather(JuheWeather juheWeather) {
         if(juheWeather == null || tempText == null)return;
         tempText.setText(juheWeather.getSk().getTemp()+"℃");
-        weatherText.setText(juheWeather.getToday().getCity()+" | "+juheWeather.getToday().getWeather());
+        weatherText.setText(juheWeather.getToday().getCity()+"  |  "+juheWeather.getToday().getWeather());
         windText.setText(juheWeather.getSk().getWind_direction());
         windPowerText.setText(juheWeather.getSk().getWind_strength());
         humPowerText.setText(juheWeather.getSk().getHumidity());
-        flPowerText.setText(juheWeather.getToday().getComfort_index());
+        flPowerText.setText(juheWeather.getToday().getUv_index());
+
+        weekTv.setText(juheWeather.getToday().getWeek());
+        dateTv.setText(juheWeather.getToday().getDate_y());
+        temperatureTv.setText(juheWeather.getToday().getTemperature());
+        comfortIndexTv.setText(TextUtils.isEmpty(juheWeather.getToday().getComfort_index())?"无数据":juheWeather.getToday().getComfort_index());
+        dryingIndexTv.setText(TextUtils.isEmpty(juheWeather.getToday().getDrying_index())?"无数据":juheWeather.getToday().getDrying_index());
+        washIndexTv.setText(TextUtils.isEmpty(juheWeather.getToday().getWash_index())?"无数据":juheWeather.getToday().getWash_index());
+        travelIndexTv.setText(TextUtils.isEmpty(juheWeather.getToday().getTravel_index())?"无数据":juheWeather.getToday().getTravel_index());
+        exerciseIndexTv.setText(TextUtils.isEmpty(juheWeather.getToday().getExercise_index())?"无数据":juheWeather.getToday().getExercise_index());
+        dressIndexTv.setText(TextUtils.isEmpty(juheWeather.getToday().getDressing_index())?"无数据":juheWeather.getToday().getDressing_index());
+        dressAdviceTv.setText(TextUtils.isEmpty(juheWeather.getToday().getDressing_advice())?"":juheWeather.getToday().getDressing_advice());
+
         List<JuheWeather.Future> futures = juheWeather.getFutures();
-        Log.e(WApplication.TAG,"size: "+futures.size());
     }
 
     private void loadAssetsFile(){
