@@ -11,6 +11,7 @@ import com.taoze.weather.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
@@ -41,21 +42,15 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private LineChartData mLineData;            //图标数据
     public final static String[] dayStrs = new String[]{"6.06", "6.07", "6.08", "6.09", "6.10", "6.11", "6.12"};
 
-    private BasicViewHolder basicHolder;
 
     public WeatherRecyclerAdapter(Context context) {
         this.context = context;
     }
 
-    public BasicViewHolder getBasicViewHolder(){
-        return  basicHolder;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_BASIC) {
-            basicHolder = new BasicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_info_basic, parent, false));
-            return basicHolder;
+            return new BasicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_info_basic, parent, false));
         } else {
             return new TempViewHolder(LayoutInflater.from(context).inflate(R.layout.item_info_temp, parent, false));
         }
@@ -80,9 +75,11 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         List<PointValue> values = new ArrayList<>();
 
         //设置默认值 都为0
+        Random random = new Random();
         for (int i = 0; i < numValues; ++i) {
             values.add(new PointValue(i, 0));
-            axisValues.add(new AxisValue(i).setLabel(dayStrs[i]));
+            int value = Math.abs(random.nextInt()%10);
+            axisValues.add(new AxisValue(value).setLabel(dayStrs[i]));
         }
 
         //设置线
@@ -99,7 +96,7 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         holder.dailyChart.setViewportCalculationEnabled(false);
 
         //设置到窗口上
-        Viewport v = new Viewport(0, 110, 6, -5);   //防止曲线超过范围 边界保护
+        Viewport v = new Viewport(0, 50, 8, 0);   //防止曲线超过范围 边界保护
         holder.dailyChart.setMaximumViewport(v);
         holder.dailyChart.setCurrentViewport(v);
         holder.dailyChart.setZoomType(ZoomType.HORIZONTAL);
@@ -120,13 +117,8 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public class BasicViewHolder extends RecyclerView.ViewHolder {
-        private View basicView;
         BasicViewHolder(View itemView) {
             super(itemView);
-            basicView = itemView;
-        }
-        public View getBasicView(){
-            return basicView;
         }
     }
 
