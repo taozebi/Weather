@@ -1,6 +1,7 @@
 package com.taoze.weather.presenter.impl;
 
 import com.taoze.weather.model.IWeatherModel;
+import com.taoze.weather.model.entity.JuheWeather;
 import com.taoze.weather.model.entity.Weather;
 import com.taoze.weather.model.impl.WeatherModelImpl;
 import com.taoze.weather.presenter.IWeatherPresenter;
@@ -34,5 +35,10 @@ public class WeatherPresenterImpl implements IWeatherPresenter,OnWeatherListener
     @Override
     public void onError(String errorMsg) {
         weatherView.showError(errorMsg);
+    }
+
+    @Override
+    public void onSuccess(JuheWeather weather) {
+        weatherView.setWeather(weather);
     }
 }

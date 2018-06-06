@@ -41,14 +41,21 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private LineChartData mLineData;            //图标数据
     public final static String[] dayStrs = new String[]{"6.06", "6.07", "6.08", "6.09", "6.10", "6.11", "6.12"};
 
+    private BasicViewHolder basicHolder;
+
     public WeatherRecyclerAdapter(Context context) {
         this.context = context;
+    }
+
+    public BasicViewHolder getBasicViewHolder(){
+        return  basicHolder;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_BASIC) {
-            return new BasicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_info_basic, parent, false));
+            basicHolder = new BasicViewHolder(LayoutInflater.from(context).inflate(R.layout.item_info_basic, parent, false));
+            return basicHolder;
         } else {
             return new TempViewHolder(LayoutInflater.from(context).inflate(R.layout.item_info_temp, parent, false));
         }
@@ -113,8 +120,13 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public class BasicViewHolder extends RecyclerView.ViewHolder {
+        private View basicView;
         BasicViewHolder(View itemView) {
             super(itemView);
+            basicView = itemView;
+        }
+        public View getBasicView(){
+            return basicView;
         }
     }
 

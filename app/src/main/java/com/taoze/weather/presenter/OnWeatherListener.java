@@ -1,5 +1,6 @@
 package com.taoze.weather.presenter;
 
+import com.taoze.weather.model.entity.JuheWeather;
 import com.taoze.weather.model.entity.Weather;
 
 /**
@@ -10,4 +11,5 @@ import com.taoze.weather.model.entity.Weather;
 public interface OnWeatherListener {
     public void onSuccess(Weather weather);
     public void onError(String errorMsg);
+    public void onSuccess(JuheWeather weather);
 }

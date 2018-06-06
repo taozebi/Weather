@@ -4,22 +4,22 @@ package com.taoze.weather.model.entity;
  * Created by Administrator on 2015/2/6.
  */
 public class WeatherInfo {
-    private String city; //城市
-    private String cityid; //城市代码
-    private String temp; //温度
-    private String WD; //风向
-    private String WS; //风力
-    private String SD; //湿度
-    private String WSE;//
-    private String time; //时间
-    private String njd; //
-    private String rain;
-    private String weather; //天气
-    private String temp1; //低温
-    private String temp2; //高温
-    private String img1;
-    private String img2;
-    private String ptime;
+    private String city = ""; //城市
+    private String cityid = ""; //城市代码
+    private String temp = ""; //温度
+    private String WD = ""; //风向
+    private String WS = ""; //风力
+    private String SD = ""; //湿度
+    private String WSE = "";//
+    private String time = ""; //时间
+    private String njd = ""; //
+    private String rain = "";
+    private String weather = ""; //天气
+    private String temp1 = ""; //低温
+    private String temp2 = ""; //高温
+    private String img1 = "";
+    private String img2 = "";
+    private String ptime = "";
 
     public String getCity() {
         return city;

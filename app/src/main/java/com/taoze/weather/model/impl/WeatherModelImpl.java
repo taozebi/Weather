@@ -3,14 +3,18 @@ package com.taoze.weather.model.impl;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.taoze.weather.global.URLContants;
 import com.taoze.weather.model.IWeatherModel;
+import com.taoze.weather.model.entity.JuheResult;
 import com.taoze.weather.model.entity.Weather;
 import com.taoze.weather.presenter.OnWeatherListener;
 
 import cn.finalteam.okhttpfinal.BaseHttpRequestCallback;
 import cn.finalteam.okhttpfinal.HttpRequest;
+import cn.finalteam.okhttpfinal.RequestParams;
 
 /**
+ * Weather数据模型层具体实现
  * Created by Taoze on 2018/6/1.
  */
 
@@ -20,7 +24,7 @@ public class WeatherModelImpl implements IWeatherModel {
 
     @Override
     public void loadWeather(String cityNO, final OnWeatherListener listener) {
-        String url1 = "http://www.weather.com.cn/data/sk/" + cityNO + ".html";
+        /*String url1 = "http://www.weather.com.cn/data/sk/" + cityNO + ".html";
         String url2 = "http://www.weather.com.cn/data/cityinfo/" + cityNO + ".html";
         HttpRequest.get(url1 ,null, 15000, new BaseHttpRequestCallback() {
                     @Override
@@ -53,7 +57,7 @@ public class WeatherModelImpl implements IWeatherModel {
                     }
                 }
         );
-        HttpRequest.get(url1 ,null, 15000, new BaseHttpRequestCallback() {
+        HttpRequest.get(url2 ,null, 15000, new BaseHttpRequestCallback() {
                     @Override
                     protected void onSuccess(Object o) {
                         super.onSuccess(o);
@@ -79,6 +83,25 @@ public class WeatherModelImpl implements IWeatherModel {
                         listener.onError(msg);
                     }
                 }
-        );
+        );*/
+        RequestParams params = new RequestParams();
+        params.addFormDataPart("cityname",cityNO);
+        params.addFormDataPart("key", URLContants.JUHE_APPKEY);
+        HttpRequest.get(URLContants.URL_JUHE_WEATHER,params,15000,new BaseHttpRequestCallback(){
+            @Override
+            protected void onSuccess(Object o) {
+                super.onSuccess(o);
+                JuheResult result = new Gson().fromJson(o.toString(),JuheResult.class);
+                if(result != null){
+                    listener.onSuccess(result.getResult());
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode, String msg) {
+                super.onFailure(errorCode, msg);
+                listener.onError(msg);
+            }
+        });
     }
 }

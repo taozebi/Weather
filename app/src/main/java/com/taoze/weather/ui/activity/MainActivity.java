@@ -1,10 +1,12 @@
 package com.taoze.weather.ui.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Xml;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.taoze.weather.model.dao.CountyDao;
 import com.taoze.weather.model.dao.ProvinceDao;
 import com.taoze.weather.model.entity.City;
 import com.taoze.weather.model.entity.County;
+import com.taoze.weather.model.entity.JuheWeather;
 import com.taoze.weather.model.entity.Province;
 import com.taoze.weather.model.entity.Weather;
 import com.taoze.weather.presenter.IWeatherPresenter;
@@ -47,7 +50,7 @@ public class MainActivity extends CommonActivity implements IWeatherView{
     public TextView windText;                  //风向
     public TextView windPowerText;             //风力
     public TextView humPowerText;              //湿度
-    public TextView flPowerText;               //体感温度
+    public TextView flPowerText;               //舒适度
 
     /*========== 数据相关 ===========*/
 
@@ -55,6 +58,8 @@ public class MainActivity extends CommonActivity implements IWeatherView{
     /*========== 其他 ===========*/
     private int mScrollerY;                     //滚动距离
     private int mAlpha;                         //透明值
+
+    private WeatherRecyclerAdapter mAdapter;
 
     private IWeatherPresenter weatherPresenter;
 
@@ -90,19 +95,33 @@ public class MainActivity extends CommonActivity implements IWeatherView{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
-        tempText = (TextView) findViewById(R.id.tv_basic_temp);
-        weatherText = (TextView) findViewById(R.id.tv_basic_weather);
-        windText = (TextView) findViewById(R.id.tv_basic_wind);
-        windPowerText = (TextView) findViewById(R.id.tv_basic_wind_power);
-        humPowerText = (TextView) findViewById(R.id.tv_basic_hum_power);
-        flPowerText = (TextView) findViewById(R.id.tv_basic_fl_power);
-
         weatherRView.setLayoutManager(new LinearLayoutManager(this));
-        weatherRView.setAdapter(new WeatherRecyclerAdapter(this));
+        mAdapter = new WeatherRecyclerAdapter(this);
+        weatherRView.setAdapter(mAdapter);
 
-        weatherPresenter = new WeatherPresenterImpl(this);
-        String cityNO = "101200101";
-        weatherPresenter.getWeather(cityNO);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int firstVisibleItemPosition = ((LinearLayoutManager)weatherRView.getLayoutManager()).findFirstVisibleItemPosition();
+                View basicView = weatherRView.getLayoutManager().findViewByPosition(firstVisibleItemPosition);
+                tempText = (TextView) basicView.findViewById(R.id.tv_basic_temp);
+                weatherText = (TextView) basicView.findViewById(R.id.tv_basic_weather);
+                windText = (TextView) basicView.findViewById(R.id.tv_basic_wind);
+                windPowerText = (TextView) basicView.findViewById(R.id.tv_basic_wind_power);
+                humPowerText = (TextView) basicView.findViewById(R.id.tv_basic_hum_power);
+                flPowerText = (TextView) basicView.findViewById(R.id.tv_basic_fl_power);
+
+                weatherPresenter = new WeatherPresenterImpl(MainActivity.this);
+                String cityNO = "武汉";
+                weatherPresenter.getWeather(cityNO);
+            }
+        },500);
     }
 
     @Override
@@ -112,11 +131,24 @@ public class MainActivity extends CommonActivity implements IWeatherView{
 
     @Override
     public void setWeather(Weather weather) {
-        if(weather == null)return;
+        if(weather == null || tempText == null)return;
         tempText.setText(weather.getWeatherinfo().getTemp());
-        weatherText.setText(weather.getWeatherinfo().getCity()+"  |  "+weather.getWeatherinfo().getWeather());
+        weatherText.setText(weather.getWeatherinfo().getCity()+" | "+weather.getWeatherinfo().getWeather());
         windPowerText.setText(weather.getWeatherinfo().getWS());
         humPowerText.setText(weather.getWeatherinfo().getSD());
+    }
+
+    @Override
+    public void setWeather(JuheWeather juheWeather) {
+        if(juheWeather == null || tempText == null)return;
+        tempText.setText(juheWeather.getSk().getTemp()+"℃");
+        weatherText.setText(juheWeather.getToday().getCity()+" | "+juheWeather.getToday().getWeather());
+        windText.setText(juheWeather.getSk().getWind_direction());
+        windPowerText.setText(juheWeather.getSk().getWind_strength());
+        humPowerText.setText(juheWeather.getSk().getHumidity());
+        flPowerText.setText(juheWeather.getToday().getComfort_index());
+        List<JuheWeather.Future> futures = juheWeather.getFutures();
+        Log.e(WApplication.TAG,"size: "+futures.size());
     }
 
     private void loadAssetsFile(){

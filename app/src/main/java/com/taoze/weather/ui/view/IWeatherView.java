@@ -1,5 +1,6 @@
 package com.taoze.weather.ui.view;
 
+import com.taoze.weather.model.entity.JuheWeather;
 import com.taoze.weather.model.entity.Weather;
 
 /**
@@ -9,4 +10,5 @@ import com.taoze.weather.model.entity.Weather;
 public interface IWeatherView {
     void showError(String errorMsg);
     void setWeather(Weather weather);
+    void setWeather(JuheWeather juheWeather);
 }
