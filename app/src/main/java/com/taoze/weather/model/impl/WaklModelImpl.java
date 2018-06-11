@@ -17,4 +17,9 @@ public class WaklModelImpl implements IWalkModel{
     public void setWalkCount(int count) {
 
     }
+
+    @Override
+    public void onModelDestroy() {
+
+    }
 }

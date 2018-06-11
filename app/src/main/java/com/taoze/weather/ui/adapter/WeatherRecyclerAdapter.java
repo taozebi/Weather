@@ -76,10 +76,11 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         //设置默认值 都为0
         Random random = new Random();
+        int number = 25;
         for (int i = 0; i < numValues; ++i) {
-            values.add(new PointValue(i, 0));
-            int value = Math.abs(random.nextInt()%10);
-            axisValues.add(new AxisValue(value).setLabel(dayStrs[i]));
+            int value = number + Math.abs(random.nextInt(10)%10);
+            values.add(new PointValue(i, value));
+            axisValues.add(new AxisValue(i).setLabel(dayStrs[i]));
         }
 
         //设置线
@@ -96,7 +97,7 @@ public class WeatherRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         holder.dailyChart.setViewportCalculationEnabled(false);
 
         //设置到窗口上
-        Viewport v = new Viewport(0, 50, 8, 0);   //防止曲线超过范围 边界保护
+        Viewport v = new Viewport(0, 40, 6, 15);   //防止曲线超过范围 边界保护
         holder.dailyChart.setMaximumViewport(v);
         holder.dailyChart.setCurrentViewport(v);
         holder.dailyChart.setZoomType(ZoomType.HORIZONTAL);

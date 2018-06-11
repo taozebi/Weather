@@ -104,4 +104,9 @@ public class WeatherModelImpl implements IWeatherModel {
             }
         });
     }
+
+    @Override
+    public void onModelDestroy() {
+
+    }
 }

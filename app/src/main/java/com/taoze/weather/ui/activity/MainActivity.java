@@ -100,6 +100,11 @@ public class MainActivity extends CommonActivity implements IWeatherView{
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onInitData() {
         loadAssetsFile();
 
@@ -275,5 +280,10 @@ public class MainActivity extends CommonActivity implements IWeatherView{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onViewDestory() {
+
     }
 }

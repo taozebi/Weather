@@ -7,7 +7,7 @@ import com.taoze.weather.model.entity.Weather;
  * Created by Taoze on 2018/6/1.
  */
 
-public interface IWeatherView {
+public interface IWeatherView extends IBaseView {
     void showError(String errorMsg);
     void setWeather(Weather weather);
     void setWeather(JuheWeather juheWeather);

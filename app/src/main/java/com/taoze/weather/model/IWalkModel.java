@@ -5,7 +5,7 @@ package com.taoze.weather.model;
  * Created by Taoze on 2018/6/1.
  */
 
-public interface IWalkModel {
+public interface IWalkModel extends IBaseModel{
 
     /**
      * 获取步数

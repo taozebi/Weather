@@ -5,7 +5,7 @@ package com.taoze.weather.presenter;
  * Created by Taoze on 2018/5/31.
  */
 
-public interface IWalkPresenter {
+public interface IWalkPresenter extends IBasePresenter{
     public void loadWalk(String cityName);
 
     public void saveWalkCount(int count);

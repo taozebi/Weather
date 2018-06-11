@@ -5,7 +5,7 @@ package com.taoze.weather.presenter;
  * Created by Taoze on 2018/5/31.
  */
 
-public interface IWeatherPresenter {
+public interface IWeatherPresenter extends IBasePresenter{
     /**
      * 获取天气的逻辑
      */

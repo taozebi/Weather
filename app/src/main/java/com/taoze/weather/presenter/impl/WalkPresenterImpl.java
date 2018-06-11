@@ -17,4 +17,9 @@ public class WalkPresenterImpl implements IWalkPresenter {
     public void saveWalkCount(int count) {
 
     }
+
+    @Override
+    public void onPresenterDestroy() {
+
+    }
 }

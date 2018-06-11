@@ -8,7 +8,7 @@ import com.taoze.weather.presenter.OnWeatherListener;
  * Created by Taoze on 2018/6/1.
  */
 
-public interface IWeatherModel {
+public interface IWeatherModel extends IBaseModel{
 
     public void loadWeather(String cityCode, OnWeatherListener listener);
 

@@ -41,4 +41,14 @@ public class WeatherPresenterImpl implements IWeatherPresenter,OnWeatherListener
     public void onSuccess(JuheWeather weather) {
         weatherView.setWeather(weather);
     }
+
+    @Override
+    public void onPresenterDestroy() {
+        if(weatherModel != null){
+            weatherModel.onModelDestroy();
+        }
+        if(weatherView != null){
+            weatherView.onViewDestory();
+        }
+    }
 }
