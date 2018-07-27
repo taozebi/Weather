@@ -56,7 +56,8 @@ public class WApplication extends Application{
 
     private void initializeDB() {
         Log.d(WApplication.TAG, "init DB");
-        String path = Utils.getAppDir(this, getResources().getString(R.string.app_name)) + "/config/" + "db";
+//        String path = Utils.getAppDir(this, getResources().getString(R.string.app_name)) + "/config/" + "db";
+        String path = "/data/data/com.taoze.weather/databases/";
         Log.d(WApplication.TAG, "Database Path --> " + path);
         DBConfig.DB_PATH = path;
         DBConfig.DB_VERSION = 3;
